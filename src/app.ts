@@ -1,9 +1,9 @@
 import express from 'express';
-import { usuario } from './routes/usuarioRoutes';
+import { report } from './routes/reportRoutes';
 
 const app = express();
 
 app.use(express.json());
-app.use('/usuario', usuario);
+app.use('/report', report);
 
 export { app }
