@@ -1,5 +1,6 @@
-export interface IFiltroRelatorioDTO {
-    codTurma: number,
+export interface IFiltroRelatorioDTO 
+{
+    codTurma: string,
     dataInicial: string,
     dataFinal: string,
 }

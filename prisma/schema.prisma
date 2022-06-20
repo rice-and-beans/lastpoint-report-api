@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique 
+  email  String @unique
+  nome   String
+  senha  String
+  tipo   Int
+  aula Aula[]
+  chamada Chamada[]
+}
+
+model Turma {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique
+  descricao  String?
+  nome   String
+  aula Aula[]
+}
+
+model Disciplina {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique
+  descricao  String? 
+  nome   String
+  aula Aula[]
+}
+
+model Aula {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique
+  dataHoraInicio  DateTime 
+  dataHoraFim   DateTime
+  nome  String
+  descricao   String?
+  token String? 
+  chamada Chamada[]
+  usuario Usuario   @relation(fields: [usuarioCodigo], references: [codigo], onDelete: Cascade)
+  usuarioCodigo String 
+  turma Turma   @relation(fields: [turmaCodigo], references: [codigo], onDelete: Cascade)
+  turmaCodigo String 
+  curso Curso   @relation(fields: [cursoCodigo], references: [codigo], onDelete: Cascade)
+  cursoCodigo String 
+  disciplina Disciplina   @relation(fields: [disciplinaCodigo], references: [codigo], onDelete: Cascade)
+  disciplinaCodigo String 
+}
+
+model Curso {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique
+  descricao  String? 
+  nome   String
+  aula Aula[]
+}
+
+model Chamada {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  codigo String @unique
+  justificativa String?
+  presenca String
+  usuario Usuario   @relation(fields: [usuarioCodigo], references: [codigo], onDelete: Cascade)
+  usuarioCodigo String 
+  aula Aula   @relation(fields: [aulaCodigo], references: [codigo], onDelete: Cascade)
+  aulaCodigo String 
+}

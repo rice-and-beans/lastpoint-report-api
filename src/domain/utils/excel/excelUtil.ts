@@ -11,22 +11,23 @@ export class IExcelUtil
     {
         this.montaCabecalho();
 
-        var dataInicial:string = this.separaDataHora(data.dataInicial);
-        var dataFinal:string   = this.separaDataHora(data.dataFinal);
+        var idxLinha = 2;
+        data.forEach(dados => {
+            var dataInicial:string = this.separaDataHora(dados.aula.dataHoraInicio.toLocaleString());
+            var dataFinal:string   = this.separaDataHora(dados.aula.dataHoraFim   .toLocaleString());
 
-        for (var idxLinha = 2; idxLinha < (data.alunos.length + 2); idxLinha++)
-        {
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeAula      , data.nomeAula);
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeCurso     , data.nomeCurso);
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeTurma     , data.nomeTurma);
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeDisciplina, data.nomeDisciplina);
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeAula      , dados.aula.nome);
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeCurso     , dados.aula.curso.nome);
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeTurma     , dados.aula.turma.nome);
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeDisciplina, dados.aula.disciplina.nome);
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.Data          , dataInicial[0].toString());
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.HoraInicial   , dataInicial[1].toString());
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.HoraFinal     , dataFinal  [1].toString());
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeAluno     , data.alunos[idxLinha - 2].nomeAluno); 
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.TipoAluno     , data.alunos[idxLinha - 2].tipoAluno);
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.Presenca      , data.alunos[idxLinha - 2].presenca ? "Presente" : "Faltou");
-        }
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeAluno     , dados.usuario.nome); 
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.TipoAluno     , dados.usuario.tipo == 1 ? "Estudante" : "Professor");
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.Presenca      , dados.presenca === "P" ? "Presente" : "Faltou");
+            idxLinha++;
+        });
 
         return excelWK;
     }
@@ -42,7 +43,8 @@ export class IExcelUtil
 
     private separaDataHora(data) : string
     {
-        return data.split(" - ");
+        data.split("T");
+        return data.split(" ");
     }
 
     private async montaLinhaRelatorio(Linha, Coluna, Opcao)
@@ -56,7 +58,8 @@ export class IExcelUtil
         if (Coluna == COLUNA_PADRAO_RP1.Presenca)
         {
             stylePresente = excelWK.createStyle({
-                font: {
+                font: 
+                {
                 color: Opcao == "Presente" ? 'green' : 'red',
                 }
             })

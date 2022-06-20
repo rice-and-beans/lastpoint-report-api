@@ -1,11 +1,14 @@
-export class RegistroExistenteException extends Error {
+export class RegistroExistenteException extends Error 
+{
     
-    constructor(msg: string) {
+    constructor(msg: string) 
+    {
         super(msg);
         Object.setPrototypeOf(this, RegistroExistenteException.prototype);
     }
 
-    getMessage() {
+    getMessage() 
+    {
         return this.message;
     }
 

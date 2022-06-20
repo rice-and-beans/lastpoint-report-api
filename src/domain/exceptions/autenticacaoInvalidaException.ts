@@ -1,11 +1,13 @@
-export class AutenticacaoInvalidaException extends Error {
-    
-    constructor(msg: string) {
+export class AutenticacaoInvalidaException extends Error 
+{
+    constructor(msg: string) 
+    {
         super(msg);
         Object.setPrototypeOf(this, AutenticacaoInvalidaException.prototype);
     }
 
-    getMessage() {
+    getMessage() 
+    {
         return this.message;
     }
 

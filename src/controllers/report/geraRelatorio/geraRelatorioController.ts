@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../baseController";
+import { BaseControllerAuth } from "../../baseControllerAuth";
 import { GeraRelatorioUseCase } from "../../../domain/useCases/relatorio/geraRelatorioUseCase"
 
 
-export class GeraRelatorioController extends BaseController 
+export class GeraRelatorioController extends BaseControllerAuth
 {
     constructor(private gerarRelatorioUseCase: GeraRelatorioUseCase) 
     {
@@ -20,7 +20,7 @@ export class GeraRelatorioController extends BaseController
             dataFinal
         });
 
-        planilha.write("arquivoExcel.xlsx", response);
+        planilha.write("RelatorioRP1.xlsx", response);
         return response;
     }
 }

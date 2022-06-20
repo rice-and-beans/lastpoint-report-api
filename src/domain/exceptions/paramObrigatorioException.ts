@@ -1,11 +1,13 @@
-export class ParamObrigatorioException extends Error {
-
-    constructor(msg: string) {
+export class ParamObrigatorioException extends Error 
+{
+    constructor(msg: string) 
+    {
         super(msg);
         Object.setPrototypeOf(this, ParamObrigatorioException.prototype);
     }
 
-    getMessage() {
+    getMessage() 
+    {
         return this.message;
     }
 

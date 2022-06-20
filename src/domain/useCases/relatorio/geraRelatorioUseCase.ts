@@ -1,25 +1,23 @@
 import { IFiltroRelatorioDTO } from "../../model/relatorio/relatorioDTO";
-import { authApi } from "../../services/records/";
-import { ValidacaoBase } from "../../validations/validacaoBase";
+import { ValidacaoBase } from "../../validations/validacaoBase"
 import { excelUtil } from "../../utils/excel/";
-import { JSON_TESTE_RP1 } from "../../../constants/excel/cabecalhoPadraoConstants";
+import { IRelatorioRepository } from "../../repositories/relatorioRepository";
 
 export class GeraRelatorioUseCase 
 {
-    constructor(private validaParamObrigatorios : ValidacaoBase)
+    constructor(private validaParamObrigatorios : ValidacaoBase, private relatorioRP1 : IRelatorioRepository)
     {
     }
-
+ 
     async execute(data: IFiltroRelatorioDTO)
     {
         await this.validaParams(data);
 
-        const dadosApi:any = await authApi.buscaDadosRelatorioRP1(data.codTurma, data.dataInicial, data.dataFinal);
+        const dadosApi:any = await this.relatorioRP1.buscaDadosRelatorioRP1(data);
 
         await this.validaRetornoDados(dadosApi);
-        await this.validaRetornoJson(dadosApi.data);
 
-        return await excelUtil.geraRelatorio(JSON_TESTE_RP1);
+        return await excelUtil.geraRelatorio(dadosApi);
     }
 
     private async validaParams(data: IFiltroRelatorioDTO)
@@ -34,15 +32,6 @@ export class GeraRelatorioUseCase
     }
     
     private async validaRetornoDados(data:any)
-    {
-        const dadosValidacao = new Map<Object, string>([
-            [data, "retorno"],
-        ]);
-
-        await this.validaParamObrigatorios.valida(dadosValidacao);
-    }
-
-    private async validaRetornoJson(data:any)
     {
         const dadosValidacao = new Map<Object, string>([
             [data, "retorno"],

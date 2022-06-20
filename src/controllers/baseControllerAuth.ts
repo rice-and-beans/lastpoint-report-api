@@ -1,23 +1,27 @@
 import { AutenticacaoInvalidaException } from "../domain/exceptions/autenticacaoInvalidaException";
-import { authApi } from "../domain/services/auth";
+import { authApi } from "../domain/services/auth/";
 import { BaseController } from "./baseController";
 
-export abstract class BaseControllerAuth extends BaseController{
+export abstract class BaseControllerAuth extends BaseController
+{
 
-    protected async auth(request, response){
+    protected async auth(request)
+    {
         const token = request.headers['x-access-token'];
         var retorno: any;
 
-        try {
+        try 
+        {
             retorno = await authApi.validaToken(token);
-        } catch (error) {
+        } 
+        catch (error) 
+        {
             throw new AutenticacaoInvalidaException("Não Autenticado");
         }
 
-        if(!retorno){
+        if(!retorno)
+        {
             throw new AutenticacaoInvalidaException("Não Autenticado");
         }
-        await authApi.salvarTokenInvalido(token);
     }
-    
 }
