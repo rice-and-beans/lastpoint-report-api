@@ -24,7 +24,7 @@ export class IExcelUtil
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.HoraInicial   , dataInicial[1].toString());
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.HoraFinal     , dataFinal  [1].toString());
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.NomeAluno     , dados.usuario.nome); 
-            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.TipoAluno     , dados.usuario.tipo == 1 ? "Estudante" : "Professor");
+            this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.TipoAluno     , dados.usuario.tipo == 1 ? "Professor" : "Estudante");
             this.montaLinhaRelatorio(idxLinha, COLUNA_PADRAO_RP1.Presenca      , dados.presenca === "P" ? "Presente" : "Faltou");
             idxLinha++;
         });

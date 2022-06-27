@@ -13,12 +13,12 @@ export class reportRepositoryImpl implements IRelatorioRepository
         {
             datainicio = new Date(data.dataInicial);
         }
-
+        
         if(data.dataFinal)
         {
             datafim = new Date(data.dataFinal);
         }
-        
+    
         const chamada = await prismaClient.chamada.findMany({
             select: 
             {
